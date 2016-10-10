@@ -93,8 +93,6 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        // Now we return the amount of rows need for each app category unwrap with an if let since its an optional
-        
         if let count = appCategory?.apps?.count {
             return count
         }

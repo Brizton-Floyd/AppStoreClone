@@ -43,9 +43,7 @@ class AppCategory: NSObject {
                  var appCategories = [AppCategory]()
                 
                 if let categories = dict["categories"] as? [[String:AnyObject]] {
-                    
-
-                    
+    
                     for value in categories {
                         
                         let appcategory = AppCategory()
