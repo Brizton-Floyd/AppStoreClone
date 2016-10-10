@@ -33,25 +33,18 @@ class AppCategory: NSObject {
         }
     }
     // there is also completein handler available in the Constants file
-    static func fetchFeaturedApps(completionHandler: @escaping ([AppCategory]) -> ()) {
+    static func fetchFeaturedApps(completionHandler: @escaping (FeaturedApps) -> ()) {
         
         Alamofire.request(APP_URL_STRING).responseJSON { response in
             let jsonResult = response.result
             
             if let dict = jsonResult.value as? Dictionary<String, AnyObject> {
                 
-                 var appCategories = [AppCategory]()
+                 let featuredApps = FeaturedApps()
                 
-                if let categories = dict["categories"] as? [[String:AnyObject]] {
-    
-                    for value in categories {
-                        
-                        let appcategory = AppCategory()
-                        appcategory.setValuesForKeys(value)
-                        appCategories.append(appcategory)
-                    }
-                    completionHandler(appCategories)
-                }
+                // here we will parse the entire json object and set properties dynamically based on key input
+                 featuredApps.setValuesForKeys(dict)
+                 completionHandler(featuredApps)
             }
         }
     }
