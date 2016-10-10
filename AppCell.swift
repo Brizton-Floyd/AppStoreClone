@@ -17,19 +17,20 @@ class AppCell: UICollectionViewCell {
             
             if let name = app?.name {
                nameLabel.text = name
+                
                 let size = CGSize(width: frame.width, height: 10000)
                 let rect = NSString(string: name).boundingRect(with: size, options: NSStringDrawingOptions.usesFontLeading.union(NSStringDrawingOptions.usesLineFragmentOrigin), attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14)], context: nil)
                 
                 if rect.height > 20 {
-                    categoryLabel.frame = CGRect(x: 0, y: frame.width + 38, width: frame.width, height: 20)
-                    priceLabel.frame = CGRect(x: 0, y: frame.width + 56 ,width: frame.width, height: 20)
+                    categoryLabel.frame = CGRect(x: 0, y: frame.width + 35, width: frame.width, height: 20)
+                    priceLabel.frame = CGRect(x: 0, y: frame.width + 53 ,width: frame.width, height: 20)
                 }
                 else{
-                    categoryLabel.frame = CGRect(x: 0, y: frame.width + 22, width: frame.width, height: 20)
-                    priceLabel.frame = CGRect(x: 0, y: frame.width + 40 ,width: frame.width, height: 20)
+                    categoryLabel.frame = CGRect(x: 0, y: frame.width + 18, width: frame.width, height: 20)
+                    priceLabel.frame = CGRect(x: 0, y: frame.width + 36 ,width: frame.width, height: 20)
                 }
-                nameLabel.frame = CGRect(x: 0, y: frame.width + 5, width: frame.width, height: 40)
-
+                nameLabel.frame = CGRect(x: 0, y: frame.width + 3, width: frame.width, height: 40)
+                nameLabel.sizeToFit()
             }
             
             categoryLabel.text = app?.category

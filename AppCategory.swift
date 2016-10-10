@@ -32,7 +32,7 @@ class AppCategory: NSObject {
             super.setValue(value, forKey: key)
         }
     }
-    
+    // there is also completein handler available in the Constants file
     static func fetchFeaturedApps(completionHandler: @escaping ([AppCategory]) -> ()) {
         
         Alamofire.request(APP_URL_STRING).responseJSON { response in
