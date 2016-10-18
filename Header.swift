@@ -28,7 +28,7 @@ class Header: CategoryCell {
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         
-        let size = CGSize(width: 200, height: frame.height - 32)
+        let size = CGSize(width: frame.width / 2 + 50, height: frame.height)
         return size
     }
     

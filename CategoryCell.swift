@@ -11,7 +11,10 @@ import UIKit
 // this class will represent the cells data that gets populated
 class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    fileprivate let appCellId = "appCellId"
+    private let appCellId = "appCellId"
+    
+    // Property that will allow the cells to call the show app function in the featured apps controller class
+    var featuredAppsController: FeaturedAppsController?
     
     // once the cell is dequed this property will be called and if a value was assign when the didSet will execute and assign the value to the nameLabel.text property    
     var appCategory: AppCategory? {
@@ -55,13 +58,16 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
     }()
     
     // here we will set up a collection view within an already defined cell
-    let appsCollectionView: UICollectionView = {
+    lazy var appsCollectionView: UICollectionView = {
 
         let layout = UICollectionViewFlowLayout()
         
         layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -78,8 +84,6 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
         addSubview(dividerLineView)
         addSubview(nameLabel)
 
-        appsCollectionView.dataSource = self
-        appsCollectionView.delegate = self
         appsCollectionView.register(AppCell.self, forCellWithReuseIdentifier: appCellId)
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-14-[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": nameLabel]))
@@ -91,6 +95,15 @@ class CategoryCell: UICollectionViewCell, UICollectionViewDataSource, UICollecti
         //This contraint is here to positon the subviews vertically. Pretty much the same appoach as above
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[nameLabel(30)][v0][v1(0.5)]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": appsCollectionView, "v1":dividerLineView, "nameLabel":nameLabel]))
         
+    }
+    
+    // this funciton will alllow the ability to perform a seque programatically 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let app = appCategory?.apps?[indexPath.item] {
+            
+            featuredAppsController?.showAppDetailForApp(app: app)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

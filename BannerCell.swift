@@ -10,10 +10,12 @@ import Foundation
 import UIKit
 
 class BannerCell: AppCell {
+
    
     override func setUpViews() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-       
+       imageView.translatesAutoresizingMaskIntoConstraints = false
+       imageView.layer.borderColor = UIColor(white: 0.4, alpha: 0.4).cgColor
+       imageView.layer.borderWidth = 0.5
         imageView.layer.cornerRadius = 0
         addSubview(imageView)
         

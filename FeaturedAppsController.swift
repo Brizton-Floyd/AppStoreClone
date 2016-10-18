@@ -22,18 +22,21 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        AppCategory.fetchFeaturedApps { (featuredApps) in
-            self.appCategories = featuredApps.appCategories
-            self.featuredApps = featuredApps
-            self.collectionView?.reloadData()
-        }
-
+        // this is how you set the title for UICollcetionViewNavigationContoller
+        navigationItem.title = "Featured Apps"
+    
         collectionView?.backgroundColor = UIColor.white
         collectionView?.register(CategoryCell.self, forCellWithReuseIdentifier: cellID)
         collectionView?.register(LargeCategoryCell.self, forCellWithReuseIdentifier: largeCellId)
         
         // this is how you go about registering a header for a collectionview
         collectionView?.register(Header.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        
+        AppCategory.fetchFeaturedApps { (featuredApps) in
+            self.appCategories = featuredApps.appCategories
+            self.featuredApps = featuredApps
+            self.collectionView?.reloadData()
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -51,6 +54,8 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
             
             cell.appCategory = appCategories?[indexPath.item]
             
+            cell.featuredAppsController = self
+            
             return cell
         }
         
@@ -58,7 +63,18 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
         
         cell.appCategory = appCategories?[indexPath.item]
         
+        // since the featuredAppController is not assigned a value in the cell class assign self to variable so the transistion will work
+        cell.featuredAppsController = self
+        
         return cell
+    }
+    
+    // function that will allow to show app detail for a certain app
+    func showAppDetailForApp(app: App) {
+        let layout = UICollectionViewFlowLayout()
+        let appDetainController = AppDetailController(collectionViewLayout: layout)
+        appDetainController.app = app
+        navigationController?.pushViewController(appDetainController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -82,7 +98,7 @@ class FeaturedAppsController: UICollectionViewController, UICollectionViewDelega
     // must overide this function for header view to apper
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        return CGSize(width: view.frame.width, height: 150)
+        return CGSize(width: view.frame.width, height: 120)
     }
 }
 

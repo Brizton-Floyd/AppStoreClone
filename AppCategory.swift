@@ -8,7 +8,7 @@
 
 import UIKit
 import Foundation
-import Alamofire
+
 
 class AppCategory: NSObject {
     
@@ -19,6 +19,7 @@ class AppCategory: NSObject {
     
     override func setValue(_ value: Any?, forKey key: String) {
         if key == "apps" {
+            
             
             apps = [App]()
             for dict in value as! [[String:AnyObject]] {
@@ -35,17 +36,39 @@ class AppCategory: NSObject {
     // there is also completein handler available in the Constants file
     static func fetchFeaturedApps(completionHandler: @escaping (FeaturedApps) -> ()) {
         
-        Alamofire.request(APP_URL_STRING).responseJSON { response in
-            let jsonResult = response.result
+        let url = URL(string: APP_URL_STRING)
+        
+        
+        
+        
+        URLSession.shared.dataTask(with: url!) { (data, response, error) in
             
-            if let dict = jsonResult.value as? Dictionary<String, AnyObject> {
-                
-                 let featuredApps = FeaturedApps()
-                
-                // here we will parse the entire json object and set properties dynamically based on key input
-                 featuredApps.setValuesForKeys(dict)
-                 completionHandler(featuredApps)
+            if error != nil {
+                print(error)
             }
-        }
+            
+            do {
+                
+                let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers)) as! [String:AnyObject]
+                
+                let featuredApps = FeaturedApps()
+                featuredApps.setValuesForKeys(json)
+                
+                DispatchQueue.main.async(execute: { 
+                   
+                    completionHandler(featuredApps)
+                    
+                })
+
+            }catch let err {
+                print(err)
+            }
+            
+
+            
+            
+
+        }.resume()
+        
     }
 }
